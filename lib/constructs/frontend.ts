@@ -15,7 +15,7 @@ interface Props {
   name: string;
 }
 
-export default ({ scope, name }: Props) => {
+export default ({ scope, name }: Props): void => {
   const frontend = new Bucket(scope, `${name}Bucket`, {
     websiteIndexDocument: "index.html",
     publicReadAccess: true,
