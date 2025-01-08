@@ -7,3 +7,6 @@ We'll also include authentication using Cognito.
 ## Reddit
 
 https://www.reddit.com/r/aws/comments/1hrf9sf/restrict_access_to_api_gateway_to_traffic_coming/
+
+## 
+aws s3 rm s3://cognitoedgeauthstack-frontendbucketefe2e19c-q9rnihfyuyxf --recursive 
