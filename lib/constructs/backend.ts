@@ -1,5 +1,6 @@
 import { LambdaIntegration, LambdaRestApi } from "aws-cdk-lib/aws-apigateway";
-import { Runtime, Code, Function } from "aws-cdk-lib/aws-lambda";
+import { Runtime, Code } from "aws-cdk-lib/aws-lambda";
+import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Construct } from "constructs";
 
 interface Props {
@@ -8,10 +9,10 @@ interface Props {
 }
 
 export default ({ scope, name }: Props): void => {
-  const helloWorldFunction = new Function(scope, `${name}HelloFunction`, {
+  const helloWorldFunction = new NodejsFunction(scope, `${name}HelloFunction`, {
     runtime: Runtime.NODEJS_20_X, // Choose any supported Node.js runtime
-    code: Code.fromAsset("lambda"), // Points to the lambda directory
-    handler: "hello.handler", // Points to the 'hello' file in the lambda directory
+    code: Code.fromAsset("lambda"),
+    handler: "hello.handler",
   });
 
   const api = new LambdaRestApi(scope, `${name}AG`, {
