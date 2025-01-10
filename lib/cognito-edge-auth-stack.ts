@@ -8,13 +8,11 @@ export class CognitoEdgeAuthStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    const { userPool, userPoolClient } = auth({ scope: this, name: "Auth" });
+    auth({ scope: this, name: "Auth" });
     frontend({ scope: this, name: "Frontend" });
     backend({
       scope: this,
       name: "Backend",
-      userPool,
-      userPoolClient
     });
   }
 }
