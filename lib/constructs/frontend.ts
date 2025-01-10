@@ -15,7 +15,7 @@ interface Props {
   name: string;
 }
 
-export default ({ scope, name }: Props): void => {
+export default ({ scope, name }: Props): { distribution: Distribution } => {
   const frontend = new Bucket(scope, `${name}Bucket`, {
     websiteIndexDocument: "index.html",
     publicReadAccess: true,
@@ -37,4 +37,6 @@ export default ({ scope, name }: Props): void => {
     distribution: distribution,
     distributionPaths: ["/*"],
   });
+
+  return { distribution };
 };

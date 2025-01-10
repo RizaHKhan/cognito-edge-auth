@@ -3,6 +3,7 @@ import {
   LambdaIntegration,
   LambdaRestApi,
 } from "aws-cdk-lib/aws-apigateway";
+import { Distribution } from "aws-cdk-lib/aws-cloudfront";
 import { Runtime, Code } from "aws-cdk-lib/aws-lambda";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Construct } from "constructs";
@@ -10,9 +11,10 @@ import { Construct } from "constructs";
 interface Props {
   scope: Construct;
   name: string;
+  distribution: Distribution;
 }
 
-export default ({ scope, name }: Props): void => {
+export default ({ scope, name, distribution }: Props): void => {
   const helloWorldFunction = new NodejsFunction(scope, `${name}HelloFunction`, {
     runtime: Runtime.NODEJS_20_X, // Choose any supported Node.js runtime
     code: Code.fromAsset("lambda"),
@@ -23,7 +25,7 @@ export default ({ scope, name }: Props): void => {
     handler: helloWorldFunction,
     proxy: false,
     defaultCorsPreflightOptions: {
-      allowOrigins: Cors.ALL_ORIGINS,
+      allowOrigins: [distribution.domainName],
       allowMethods: Cors.ALL_METHODS,
     },
   });
