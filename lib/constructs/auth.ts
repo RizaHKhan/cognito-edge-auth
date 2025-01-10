@@ -36,13 +36,13 @@ export default function ({ scope, name }: Props): {
     generateSecret: false,
   });
 
-    new CfnOutput(scope, 'UserPoolId', {
-      value: userPool.userPoolId,
-    });
+  new CfnOutput(scope, "UserPoolId", {
+    value: userPool.userPoolId,
+  });
 
-    new CfnOutput(scope, 'UserPoolClientId', {
-      value: userPoolClient.userPoolClientId,
-    });
+  new CfnOutput(scope, "UserPoolClientId", {
+    value: userPoolClient.userPoolClientId,
+  });
 
   return { userPool, userPoolClient };
 }
