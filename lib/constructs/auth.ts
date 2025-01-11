@@ -1,4 +1,5 @@
 import { CfnOutput } from "aws-cdk-lib";
+import { CognitoUserPoolsAuthorizer } from "aws-cdk-lib/aws-apigateway";
 import { UserPool, UserPoolClient } from "aws-cdk-lib/aws-cognito";
 import { Construct } from "constructs";
 
@@ -8,8 +9,7 @@ interface Props {
 }
 
 export default function ({ scope, name }: Props): {
-  userPool: UserPool;
-  userPoolClient: UserPoolClient;
+  authorizer: CognitoUserPoolsAuthorizer;
 } {
   const userPool = new UserPool(scope, `${name}UserPool`, {
     userPoolName: `${name}UserPool`,
@@ -31,6 +31,10 @@ export default function ({ scope, name }: Props): {
     },
   });
 
+  const authorizer = new CognitoUserPoolsAuthorizer(scope, "ApiAuthorizer", {
+    cognitoUserPools: [userPool],
+  });
+
   const userPoolClient = new UserPoolClient(scope, `${name}UserPoolClient`, {
     userPool,
     generateSecret: false,
@@ -44,5 +48,5 @@ export default function ({ scope, name }: Props): {
     value: userPoolClient.userPoolClientId,
   });
 
-  return { userPool, userPoolClient };
+  return { authorizer };
 }
