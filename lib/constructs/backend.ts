@@ -31,12 +31,12 @@ export default ({
       stageName: "dev",
     },
     defaultCorsPreflightOptions: {
-      allowOrigins: ["*"], // Use specific origin if needed (e.g., "http://localhost:8080").
-      allowMethods: ["OPTIONS", "GET"], // Include all allowed methods.
+      allowOrigins: ["*"],
+      allowMethods: ["OPTIONS", "GET", "POST"],
       allowHeaders: [
         "Content-Type",
         "Authorization",
-        "Access-Control-Allow-Origin", // Explicitly allow this header.
+        "Access-Control-Allow-Origin",
       ],
     },
   });
