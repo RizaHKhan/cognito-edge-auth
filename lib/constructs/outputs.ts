@@ -8,17 +8,10 @@ interface Props {
   scope: Construct;
   userPool: UserPool;
   userPoolClient: UserPoolClient;
-  api: LambdaRestApi;
-  distribution: Distribution;
+  cfDistro: Distribution;
 }
 
-export default ({
-  scope,
-  userPool,
-  userPoolClient,
-  api,
-  distribution,
-}: Props) => {
+export default ({ scope, userPool, userPoolClient, cfDistro }: Props) => {
   new CfnOutput(scope, "UserPoolId", {
     value: userPool.userPoolId,
   });
@@ -27,15 +20,7 @@ export default ({
     value: userPoolClient.userPoolClientId,
   });
 
-  new CfnOutput(scope, "ApiEndpoint", {
-    value: api.url,
-  });
-
-  new CfnOutput(scope, "ApiDeploymentStage", {
-    value: api.deploymentStage.stageName,
-  });
-
   new CfnOutput(scope, "DistributionDomainName", {
-    value: distribution.domainName,
+    value: cfDistro.domainName,
   });
 };

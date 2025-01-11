@@ -19,7 +19,7 @@ export default ({
   scope,
   name,
   authorizerOptions,
-}: Props): { api: LambdaRestApi } => {
+}: Props): { api: RestApi } => {
   const helloWorldFunction = new NodejsFunction(scope, `${name}HelloFunction`, {
     runtime: Runtime.NODEJS_22_X,
     handler: "handler",
