@@ -1,5 +1,9 @@
-import { CfnOutput } from "aws-cdk-lib";
-import { CognitoUserPoolsAuthorizer } from "aws-cdk-lib/aws-apigateway";
+import { RemovalPolicy } from "aws-cdk-lib";
+import {
+  AuthorizationType,
+  CognitoUserPoolsAuthorizer,
+  MethodOptions,
+} from "aws-cdk-lib/aws-apigateway";
 import { UserPool, UserPoolClient } from "aws-cdk-lib/aws-cognito";
 import { Construct } from "constructs";
 
@@ -9,13 +13,16 @@ interface Props {
 }
 
 export default function ({ scope, name }: Props): {
-  authorizer: CognitoUserPoolsAuthorizer;
+  authorizerOptions: MethodOptions;
+  userPool: UserPool;
+  userPoolClient: UserPoolClient;
 } {
   const userPool = new UserPool(scope, `${name}UserPool`, {
     userPoolName: `${name}UserPool`,
     selfSignUpEnabled: true,
     signInAliases: { email: true },
     autoVerify: { email: true },
+    removalPolicy: RemovalPolicy.DESTROY,
     standardAttributes: {
       email: {
         required: true,
@@ -33,20 +40,18 @@ export default function ({ scope, name }: Props): {
 
   const authorizer = new CognitoUserPoolsAuthorizer(scope, "ApiAuthorizer", {
     cognitoUserPools: [userPool],
+    identitySource: "method.request.header.Authorization", // if not using this the default is "method.request.header.Authorizer"
   });
+
+  const authorizerOptions: MethodOptions = {
+    authorizationType: AuthorizationType.COGNITO,
+    authorizer: authorizer,
+  };
 
   const userPoolClient = new UserPoolClient(scope, `${name}UserPoolClient`, {
     userPool,
     generateSecret: false,
   });
 
-  new CfnOutput(scope, "UserPoolId", {
-    value: userPool.userPoolId,
-  });
-
-  new CfnOutput(scope, "UserPoolClientId", {
-    value: userPoolClient.userPoolClientId,
-  });
-
-  return { authorizer };
+  return { userPool, userPoolClient, authorizerOptions };
 }

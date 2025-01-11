@@ -19,7 +19,7 @@ aws ls s3
 # 2024-12-25 12:50:41 cdk-xxxx-xxxx-xxxxxx-us-east-1
 # 2025-01-10 13:49:25 my-bucket-name
 
-aws s3 rm s3://my-bucket-name --recursive
+aws s3 rm s3://cognitoedgeauthstack-frontendbucketefe2e19c-oupqquowk6p6 --recursive
 ```
 
 ## Delete user pool
@@ -31,7 +31,3 @@ aws cognito-idp delete-user-pool --user-pool-id=us-east-1_xxxxx
 ```
 
 ### Deployment
-
-CognitoEdgeAuthStack.BackendAGEndpointD888361C = https://uxybkkmece.execute-api.us-east-1.amazonaws.com/prod/
-CognitoEdgeAuthStack.UserPoolClientId = 1576kcdl5461r2v32mvd2ige4l
-CognitoEdgeAuthStack.UserPoolId = us-east-1_LoXIMI1Z2

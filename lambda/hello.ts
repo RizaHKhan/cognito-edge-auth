@@ -1,7 +1,9 @@
 exports.handler = async () => {
   return {
     statusCode: 200,
-    headers: { "Content-Type": "text/plain" },
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
     body: JSON.stringify({ message: "Hello World!" }),
   };
 };
