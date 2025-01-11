@@ -30,6 +30,15 @@ export default ({
     deployOptions: {
       stageName: "dev",
     },
+    defaultCorsPreflightOptions: {
+      allowOrigins: ["*"], // Use specific origin if needed (e.g., "http://localhost:8080").
+      allowMethods: ["OPTIONS", "GET"], // Include all allowed methods.
+      allowHeaders: [
+        "Content-Type",
+        "Authorization",
+        "Access-Control-Allow-Origin", // Explicitly allow this header.
+      ],
+    },
   });
 
   const helloResource = api.root.addResource("hello");
@@ -38,8 +47,6 @@ export default ({
     new LambdaIntegration(helloWorldFunction),
     authorizerOptions,
   );
-
-  helloResource.addMethod("OPTIONS", new LambdaIntegration(helloWorldFunction));
 
   return { api };
 };
