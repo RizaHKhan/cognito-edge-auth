@@ -1,24 +1,12 @@
-import {
-  LambdaIntegration,
-  MethodOptions,
-  RestApi,
-} from "aws-cdk-lib/aws-apigateway";
-import { Runtime } from "aws-cdk-lib/aws-lambda";
-import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+import { RestApi } from "aws-cdk-lib/aws-apigateway";
 import { Construct } from "constructs";
-import { join } from "path";
 
 interface Props {
   scope: Construct;
   name: string;
-  authorizerOptions: MethodOptions;
 }
 
-export default ({ scope, name, authorizerOptions }: Props): void => {
-  const helloWorldFunction = new NodejsFunction(scope, "hello", {
-    runtime: Runtime.NODEJS_22_X,
-  });
-
+export default ({ scope, name }: Props): { api: RestApi } => {
   const api = new RestApi(scope, `${name}AG`, {
     deployOptions: {
       stageName: "dev",
@@ -34,10 +22,5 @@ export default ({ scope, name, authorizerOptions }: Props): void => {
     },
   });
 
-  const helloResource = api.root.addResource("hello");
-  helloResource.addMethod(
-    "GET",
-    new LambdaIntegration(helloWorldFunction),
-    authorizerOptions,
-  );
+  return { api };
 };

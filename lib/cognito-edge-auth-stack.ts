@@ -5,13 +5,13 @@ import backend from "./constructs/backend";
 import auth from "./constructs/auth";
 import outputs from "./constructs/outputs";
 import distribution from "./constructs/distribution";
+import lambda from "./constructs/lambda/lambda";
 
 export class CognitoEdgeAuthStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps) {
     super(scope, id, props);
 
-    const name = "Khanr";
-    const { env } = props;
+    const name = "Scrapper";
 
     const { userPool, userPoolClient, authorizerOptions } = auth({
       scope: this,
@@ -20,9 +20,15 @@ export class CognitoEdgeAuthStack extends Stack {
 
     const { bucket } = frontend({ scope: this, name: "Frontend" });
 
-    backend({
+    const { api } = backend({
       scope: this,
       name: "Backend",
+    });
+
+    lambda({
+      scope: this,
+      name: "Lambda",
+      api,
       authorizerOptions,
     });
 
