@@ -20,7 +20,7 @@ export class CognitoEdgeAuthStack extends Stack {
 
     const { bucket } = frontend({ scope: this, name: "Frontend" });
 
-    const { api } = backend({
+    backend({
       scope: this,
       name: "Backend",
       authorizerOptions,
@@ -29,9 +29,7 @@ export class CognitoEdgeAuthStack extends Stack {
     const { cfDistro } = distribution({
       scope: this,
       name,
-      region: env?.region ?? "us-east-1",
       bucket,
-      api,
     });
 
     outputs({ scope: this, userPool, userPoolClient, cfDistro });

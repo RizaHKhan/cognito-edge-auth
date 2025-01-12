@@ -14,11 +14,7 @@ interface Props {
   authorizerOptions: MethodOptions;
 }
 
-export default ({
-  scope,
-  name,
-  authorizerOptions,
-}: Props): { api: RestApi } => {
+export default ({ scope, name, authorizerOptions }: Props): void => {
   const helloWorldFunction = new NodejsFunction(scope, "hello", {
     runtime: Runtime.NODEJS_22_X,
   });
@@ -44,6 +40,4 @@ export default ({
     new LambdaIntegration(helloWorldFunction),
     authorizerOptions,
   );
-
-  return { api };
 };

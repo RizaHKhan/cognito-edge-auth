@@ -1,19 +1,6 @@
 import { RestApi } from "aws-cdk-lib/aws-apigateway";
-import {
-  BehaviorOptions,
-  CachePolicy,
-  Distribution,
-  OriginRequestCookieBehavior,
-  OriginRequestHeaderBehavior,
-  OriginRequestPolicy,
-  OriginRequestQueryStringBehavior,
-  ViewerProtocolPolicy,
-} from "aws-cdk-lib/aws-cloudfront";
-import {
-  HttpOrigin,
-  RestApiOrigin,
-  S3StaticWebsiteOrigin,
-} from "aws-cdk-lib/aws-cloudfront-origins";
+import { Distribution, ViewerProtocolPolicy } from "aws-cdk-lib/aws-cloudfront";
+import { S3StaticWebsiteOrigin } from "aws-cdk-lib/aws-cloudfront-origins";
 import { Bucket } from "aws-cdk-lib/aws-s3";
 import { BucketDeployment, Source } from "aws-cdk-lib/aws-s3-deployment";
 import { Construct } from "constructs";
@@ -23,17 +10,9 @@ interface Props {
   scope: Construct;
   name: string;
   bucket: Bucket;
-  api: RestApi;
-  region: string;
 }
 
-export default ({
-  scope,
-  name,
-  bucket,
-  api,
-  region,
-}: Props): { cfDistro: Distribution } => {
+export default ({ scope, name, bucket }: Props): { cfDistro: Distribution } => {
   const cfDistro = new Distribution(scope, `${name}Distribution`, {
     defaultBehavior: {
       origin: new S3StaticWebsiteOrigin(bucket),
