@@ -1,11 +1,17 @@
 import { RestApi } from "aws-cdk-lib/aws-apigateway";
 import {
   BehaviorOptions,
+  CachePolicy,
   Distribution,
+  OriginRequestCookieBehavior,
+  OriginRequestHeaderBehavior,
+  OriginRequestPolicy,
+  OriginRequestQueryStringBehavior,
   ViewerProtocolPolicy,
 } from "aws-cdk-lib/aws-cloudfront";
 import {
   HttpOrigin,
+  RestApiOrigin,
   S3StaticWebsiteOrigin,
 } from "aws-cdk-lib/aws-cloudfront-origins";
 import { Bucket } from "aws-cdk-lib/aws-s3";
@@ -32,14 +38,6 @@ export default ({
     defaultBehavior: {
       origin: new S3StaticWebsiteOrigin(bucket),
       viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-    },
-    additionalBehaviors: {
-      "/api/*": {
-        origin: new HttpOrigin(
-          `${api.restApiId}.execute-api.${region}.amazonaws.com`,
-        ),
-        viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-      } as BehaviorOptions,
     },
   });
 

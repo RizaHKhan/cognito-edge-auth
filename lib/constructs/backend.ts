@@ -1,6 +1,5 @@
 import {
   LambdaIntegration,
-  LambdaRestApi,
   MethodOptions,
   RestApi,
 } from "aws-cdk-lib/aws-apigateway";
@@ -20,10 +19,8 @@ export default ({
   name,
   authorizerOptions,
 }: Props): { api: RestApi } => {
-  const helloWorldFunction = new NodejsFunction(scope, `${name}HelloFunction`, {
+  const helloWorldFunction = new NodejsFunction(scope, "hello", {
     runtime: Runtime.NODEJS_22_X,
-    handler: "handler",
-    entry: join(__dirname, "..", "..", "lambda", "hello.ts"),
   });
 
   const api = new RestApi(scope, `${name}AG`, {
